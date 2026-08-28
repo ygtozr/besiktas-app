@@ -11,9 +11,9 @@ export function StandingsTable({ rows }: { rows: Standing[] }) {
             <th>G</th>
             <th>B</th>
             <th>M</th>
-            <th>AG</th>
-            <th>YG</th>
-            <th>AV</th>
+            <th aria-label="Atılan gol">A</th>
+            <th aria-label="Yenilen gol">Y</th>
+            <th aria-label="Averaj">Av</th>
             <th>P</th>
           </tr>
         </thead>
@@ -26,10 +26,6 @@ export function StandingsTable({ rows }: { rows: Standing[] }) {
               <td>{row.position}</td>
               <td className="standing-team">
                 <strong>{row.team}</strong>
-                <small>
-                  {row.won}G · {row.drawn}B · {row.lost}M · {row.goalsFor}-
-                  {row.goalsAgainst}
-                </small>
               </td>
               <td>{row.played}</td>
               <td>{row.won}</td>

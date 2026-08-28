@@ -285,8 +285,36 @@ h2 {
   min-width: 0;
   text-align: left;
 }
-.squad-table .shirt-number {
+.player-photo-wrap {
+  position: relative;
+  width: 1.85rem;
+  height: 1.85rem;
   flex: 0 0 auto;
+}
+.player-photo {
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #27272a;
+  object-fit: cover;
+}
+.number-badge {
+  position: absolute;
+  right: -0.18rem;
+  bottom: -0.12rem;
+  display: grid;
+  min-width: 0.85rem;
+  height: 0.85rem;
+  place-items: center;
+  padding-inline: 0.12rem;
+  border: 1px solid var(--surface);
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 0.48rem;
+  font-weight: 900;
+  line-height: 1;
 }
 .squad-player-name {
   min-width: 0;
@@ -304,6 +332,41 @@ h2 {
 .squad-player-name small {
   color: var(--muted);
   font-size: 0.55rem;
+}
+.country-flag {
+  position: relative;
+  display: inline-block;
+  width: 0.72rem;
+  height: 0.72rem;
+  margin-right: 0.2rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+  border-radius: 50%;
+  vertical-align: -0.12rem;
+}
+.flag-tr {
+  background: #e30a17;
+}
+.flag-tr::after {
+  content: "☾";
+  position: absolute;
+  inset: -0.11rem 0 0 0.11rem;
+  color: white;
+  font-size: 0.52rem;
+}
+.flag-br {
+  background: radial-gradient(
+    circle,
+    #2563eb 0 24%,
+    #facc15 26% 52%,
+    #16a34a 54%
+  );
+}
+.flag-pt {
+  background: linear-gradient(90deg, #166534 0 40%, #dc2626 40%);
+}
+.flag-world {
+  background: #71717a;
 }
 .standings-controls {
   display: flex;
@@ -622,32 +685,34 @@ h2 {
   .page-tabs {
     flex-wrap: nowrap;
   }
-  .standings-table th:nth-child(4),
-  .standings-table td:nth-child(4),
-  .standings-table th:nth-child(5),
-  .standings-table td:nth-child(5),
-  .standings-table th:nth-child(6),
-  .standings-table td:nth-child(6),
-  .standings-table th:nth-child(7),
-  .standings-table td:nth-child(7),
-  .standings-table th:nth-child(8),
-  .standings-table td:nth-child(8) {
-    display: none;
-  }
-  .standings-table th:nth-child(1) {
-    width: 2.2rem;
-  }
-  .standings-table th:nth-child(3),
-  .standings-table th:nth-child(9),
-  .standings-table th:nth-child(10) {
-    width: 2rem;
-  }
-  .standing-team small {
-    display: block;
-    margin-top: 0.08rem;
-    color: var(--muted);
+  .standings-table th,
+  .standings-table td {
+    padding: 0.42rem 0.08rem;
+    text-align: center;
     font-size: 0.57rem;
-    font-weight: 400;
+  }
+  .standings-table th:first-child {
+    width: 8%;
+    padding-right: 0.15rem;
+  }
+  .standings-table th:nth-child(2) {
+    width: 30%;
+    padding-left: 0.15rem;
+    text-align: left;
+  }
+  .standings-table th:nth-child(n + 3) {
+    width: 7.75%;
+  }
+  .standings-table td:nth-child(2) {
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+  }
+  .standing-team strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .performance-table th:nth-child(n + 2),
   .performance-table td:nth-child(n + 2) {

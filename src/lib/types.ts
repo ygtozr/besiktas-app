@@ -33,6 +33,7 @@ export interface Player {
   position: "Kaleci" | "Defans" | "Orta saha" | "Forvet";
   birthDate: string;
   nationality: string;
+  photoUrl?: string;
   appearances: number | null;
   starts: number | null;
   minutes: number | null;

@@ -2,6 +2,7 @@ import { DataStatus } from "@/components/data-status";
 import { getFootballData } from "@/lib/data";
 import { displayValue } from "@/lib/format";
 import type { Player } from "@/lib/types";
+import Image from "next/image";
 
 const groups: Player["position"][] = [
   "Kaleci",
@@ -19,6 +20,12 @@ const statColumns = [
   ["redCards", "🟥", "Kırmızı kart"],
 ] as const;
 
+const flags: Record<string, string> = {
+  Türkiye: "flag-tr",
+  Brezilya: "flag-br",
+  Portekiz: "flag-pt",
+};
+
 export default async function Squad() {
   const data = await getFootballData();
   return (
@@ -29,12 +36,12 @@ export default async function Squad() {
       <div className="compact-sections">
         {groups.map((group) => (
           <section key={group}>
-            <h2>{group === "Kaleci" ? "Kaleciler" : group}</h2>
             <div className="squad-table-wrap">
               <table className="squad-table">
+                <caption className="sr-only">{group} oyuncuları</caption>
                 <thead>
                   <tr>
-                    <th>Oyuncu</th>
+                    <th>{group === "Kaleci" ? "Kaleciler" : group}</th>
                     {statColumns.map(([key, symbol, label]) => (
                       <th key={key} title={label} aria-label={label}>
                         {symbol}
@@ -48,10 +55,27 @@ export default async function Squad() {
                     .map((player) => (
                       <tr key={player.id}>
                         <td>
-                          <span className="shirt-number">{player.number}</span>
+                          <span className="player-photo-wrap">
+                            <Image
+                              className="player-photo"
+                              src={player.photoUrl ?? "/player-placeholder.svg"}
+                              width={32}
+                              height={32}
+                              alt={`${player.name} oyuncu fotoğrafı`}
+                            />
+                            <span className="number-badge">
+                              {player.number}
+                            </span>
+                          </span>
                           <span className="squad-player-name">
                             <strong>{player.name}</strong>
-                            <small>{player.nationality}</small>
+                            <small>
+                              <span
+                                className={`country-flag ${flags[player.nationality] ?? "flag-world"}`}
+                                aria-label={`${player.nationality} bayrağı`}
+                              />
+                              {player.nationality}
+                            </small>
                           </span>
                         </td>
                         {statColumns.map(([key]) => (
