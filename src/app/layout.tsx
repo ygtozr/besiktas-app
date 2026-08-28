@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
   description: "Beşiktaş futbol takımına odaklanan bağımsız taraftar projesi.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="tr">
       <body className="min-h-full">
