@@ -1,6 +1,6 @@
 import { Countdown } from "@/components/countdown";
 import { DataStatus } from "@/components/data-status";
-import { MatchCard } from "@/components/match-card";
+import { FixtureList } from "@/components/fixture-list";
 import { getFootballData, getServerNow } from "@/lib/data";
 import { resultLetter } from "@/lib/format";
 
@@ -20,63 +20,70 @@ export default async function Home() {
       <p className="eyebrow">2026–27 sezon merkezi</p>
       <h1>Siyah beyaz gündem.</h1>
       <DataStatus updatedAt={data.updatedAt} stale={data.stale} />
-      <section className="mt-6 grid gap-4 lg:grid-cols-[1.35fr_.65fr]">
-        <div className="card next-match-card">
-          <h2 className="eyebrow">Sıradaki maç</h2>
-          <h3 className="compact-match-title">{next.opponent}</h3>
-          <p className="compact-match-meta">
-            {next.competition} · {next.home ? "İç saha" : "Deplasman"}
-          </p>
-          <Countdown target={next.date} serverNow={getServerNow()} />
-          <p className="muted mt-5 text-sm">{next.venue}</p>
+      <section className="home-match-grid">
+        <div className="next-match-strip">
+          <div className="next-match-topline">
+            <div>
+              <h2 className="eyebrow">Sıradaki maç</h2>
+              <span className="next-competition">{next.competition}</span>
+              <strong>{next.home ? "İç saha" : "Deplasman"}</strong>
+            </div>
+            <Countdown target={next.date} serverNow={getServerNow()} />
+          </div>
+          <div className="next-match-teams">
+            <span className={next.home ? "active-team" : ""}>
+              {next.home ? "Beşiktaş" : next.opponent}
+            </span>
+            <b>—</b>
+            <span className={!next.home ? "active-team" : ""}>
+              {next.home ? next.opponent : "Beşiktaş"}
+            </span>
+          </div>
+          <p className="next-match-venue">{next.venue}</p>
         </div>
         {last && (
-          <div>
+          <section>
             <h2>Son oynanan maç</h2>
-            <MatchCard match={last} />
-          </div>
+            <FixtureList matches={[last]} />
+          </section>
         )}
       </section>
-      <section className="mt-8 grid-cards">
-        <div className="card">
+      <section className="home-summary-grid">
+        <div className="summary-strip">
           <p className="eyebrow">Son beş maç</p>
-          <div className="my-4 flex gap-2">
+          <div className="form-line">
             {form.map((value, i) => (
               <span
                 key={i}
-                className={`grid size-10 place-items-center rounded-full font-black text-white ${value === "G" ? "bg-emerald-600" : value === "B" ? "bg-zinc-500" : "bg-red-600"}`}
+                className={`form-dot ${value === "G" ? "form-win" : value === "B" ? "form-draw" : "form-loss"}`}
               >
                 {value}
               </span>
             ))}
+            <span className="muted form-summary">
+              {form.filter((x) => x === "G").length}G ·{" "}
+              {form.filter((x) => x === "B").length}B ·{" "}
+              {form.filter((x) => x === "M").length}M
+            </span>
           </div>
-          <p className="muted text-sm">
-            {form.filter((x) => x === "G").length} galibiyet ·{" "}
-            {form.filter((x) => x === "B").length} beraberlik ·{" "}
-            {form.filter((x) => x === "M").length} mağlubiyet
-          </p>
         </div>
-        <div className="card">
+        <div className="summary-strip league-summary">
           <p className="eyebrow">Güncel lig konumu</p>
-          <div className="mt-3 flex items-end justify-between">
+          <div>
             <strong className="league-position">{bjk.position}.</strong>
-            <div className="text-right">
+            <div>
               <strong className="league-points">{bjk.points} puan</strong>
-              <p className="muted">
-                {bjk.played} maç · Liderin {leader.points - bjk.points} puan
-                gerisinde
-              </p>
+              <span className="muted">
+                {bjk.played} maç · Liderden {leader.points - bjk.points} puan
+                geride
+              </span>
             </div>
           </div>
         </div>
       </section>
-      <section className="mt-8">
+      <section className="home-upcoming">
         <h2>Yaklaşan üç maç</h2>
-        <div className="grid-cards">
-          {upcoming.slice(0, 3).map((match) => (
-            <MatchCard key={match.id} match={match} compact />
-          ))}
-        </div>
+        <FixtureList matches={upcoming.slice(0, 3)} />
       </section>
     </main>
   );

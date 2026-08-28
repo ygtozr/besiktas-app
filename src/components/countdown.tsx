@@ -27,7 +27,7 @@ export function Countdown({
   const value = remaining(target, now);
   return (
     <div
-      className="flex gap-2"
+      className="countdown"
       aria-label={`${value.days} gün ${value.hours} saat ${value.minutes} dakika kaldı`}
     >
       {[
@@ -35,12 +35,9 @@ export function Countdown({
         [value.hours, "saat"],
         [value.minutes, "dk"],
       ].map(([number, label]) => (
-        <div
-          className="min-w-16 rounded-xl bg-zinc-950 p-3 text-center text-white dark:bg-white dark:text-black"
-          key={label}
-        >
-          <strong className="block text-xl">{number}</strong>
-          <span className="text-xs opacity-70">{label}</span>
+        <div className="countdown-unit" key={label}>
+          <strong>{number}</strong>
+          <span>{label}</span>
         </div>
       ))}
     </div>

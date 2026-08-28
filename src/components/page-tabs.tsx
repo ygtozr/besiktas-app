@@ -11,11 +11,7 @@ export function PageTabs({
   rest?: Record<string, string>;
 }) {
   return (
-    <div
-      className="mb-5 flex flex-wrap gap-2"
-      role="tablist"
-      aria-label="Görünüm seçimi"
-    >
+    <div className="page-tabs" role="tablist" aria-label="Görünüm seçimi">
       {items.map(([value, label]) => (
         <Link
           role="tab"
