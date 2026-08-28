@@ -1,9 +1,8 @@
 import { DataStatus } from "@/components/data-status";
-import { MatchCard } from "@/components/match-card";
+import { FixtureList } from "@/components/fixture-list";
 import { PageTabs } from "@/components/page-tabs";
 import { StandingsTable } from "@/components/standings-table";
 import { getFootballData } from "@/lib/data";
-import { monthKey } from "@/lib/format";
 import type { Organization } from "@/lib/types";
 
 export default async function Fixtures({
@@ -19,7 +18,6 @@ export default async function Fixtures({
     organization === "tumu"
       ? data.matches
       : data.matches.filter((m) => m.organization === organization);
-  const groups = Map.groupBy(filtered, (m) => monthKey(m.date));
   const tabs: [string, string][] = [
     ["tumu", "Tümü"],
     ["lig", "Lig"],
@@ -68,18 +66,7 @@ export default async function Fixtures({
       {view === "tablo" && organization !== "tumu" ? (
         <OrganizationView organization={organization as Organization} />
       ) : (
-        <div className="space-y-8">
-          {Array.from(groups).map(([month, items]) => (
-            <section key={month}>
-              <h2 className="capitalize">{month}</h2>
-              <div className="grid-cards">
-                {items.map((match) => (
-                  <MatchCard key={match.id} match={match} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
+        <FixtureList matches={filtered} />
       )}
     </main>
   );
@@ -105,13 +92,9 @@ async function OrganizationView({
   return (
     <section>
       <h2>{title}</h2>
-      <div className="grid-cards">
-        {data.matches
-          .filter((m) => m.organization === organization)
-          .map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
-      </div>
+      <FixtureList
+        matches={data.matches.filter((m) => m.organization === organization)}
+      />
       <p className="muted mt-4 text-sm">
         Demo veri setinde mevcut organizasyon formatına uygun tur bazlı eşleşme
         listesi gösterilmektedir.
