@@ -13,6 +13,7 @@ export default async function Fixtures({
   const query = await searchParams;
   const organization = query.organizasyon ?? "tumu";
   const view = query.gorunum ?? "fikstur";
+  const scope = query.kapsam ?? "genel";
   const data = await getFootballData();
   const filtered =
     organization === "tumu"
@@ -64,7 +65,10 @@ export default async function Fixtures({
         />
       )}
       {view === "tablo" && organization !== "tumu" ? (
-        <OrganizationView organization={organization as Organization} />
+        <OrganizationView
+          organization={organization as Organization}
+          scope={scope}
+        />
       ) : (
         <FixtureList matches={filtered} />
       )}
@@ -74,14 +78,41 @@ export default async function Fixtures({
 
 async function OrganizationView({
   organization,
+  scope,
 }: {
   organization: Organization;
+  scope: string;
 }) {
   const data = await getFootballData();
   if (organization === "lig")
     return (
       <section>
-        <h2>Süper Lig puan durumu</h2>
+        <div className="standings-controls">
+          <PageTabs
+            items={[
+              ["genel", "Genel"],
+              ["icsaha", "İç Saha"],
+              ["deplasman", "Deplasman"],
+            ]}
+            active={scope}
+            param="kapsam"
+            rest={{ organizasyon: "lig", gorunum: "tablo", sezon: "2026-27" }}
+          />
+          <select aria-label="Hafta" defaultValue="2">
+            <option value="1">1. Hafta</option>
+            <option value="2">2. Hafta</option>
+          </select>
+        </div>
+        <div className="standings-titlebar">
+          <strong>Trendyol Süper Lig</strong>
+          <span>2026–27</span>
+        </div>
+        {scope !== "genel" && (
+          <p className="scope-note">
+            Demo veride iç saha/deplasman ayrımı bulunmuyor; genel tablo
+            gösteriliyor.
+          </p>
+        )}
         <StandingsTable rows={data.standings} />
       </section>
     );

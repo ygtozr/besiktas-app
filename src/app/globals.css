@@ -251,6 +251,101 @@ h2 {
   display: grid;
   gap: 1rem;
 }
+.squad-table-wrap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--surface);
+}
+.squad-table th:first-child {
+  width: 42%;
+  text-align: left;
+}
+.squad-table th:not(:first-child) {
+  width: 8.285%;
+  text-align: center;
+}
+.squad-table th,
+.squad-table td {
+  padding: 0.38rem 0.15rem;
+}
+.squad-table th {
+  font-size: 0.58rem;
+  letter-spacing: 0;
+}
+.squad-table td {
+  text-align: center;
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+}
+.squad-table td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  text-align: left;
+}
+.squad-table .shirt-number {
+  flex: 0 0 auto;
+}
+.squad-player-name {
+  min-width: 0;
+}
+.squad-player-name strong,
+.squad-player-name small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.squad-player-name strong {
+  font-size: 0.7rem;
+}
+.squad-player-name small {
+  color: var(--muted);
+  font-size: 0.55rem;
+}
+.standings-controls {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.standings-controls select {
+  min-height: 1.7rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 0.2rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+.standings-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.6rem 0.6rem 0 0;
+  background: color-mix(in srgb, var(--text) 10%, var(--surface));
+  font-size: 0.72rem;
+}
+.standings-titlebar span {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+.standings-titlebar + .table-wrap,
+.scope-note + .table-wrap {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.scope-note {
+  margin: 0;
+  padding: 0.3rem 0.65rem;
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  color: var(--muted);
+  font-size: 0.58rem;
+}
 .squad-list {
   overflow: hidden;
   border: 1px solid var(--line);

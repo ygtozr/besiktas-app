@@ -9,6 +9,16 @@ const groups: Player["position"][] = [
   "Orta saha",
   "Forvet",
 ];
+const statColumns = [
+  ["appearances", "M", "Maç"],
+  ["starts", "11", "İlk 11"],
+  ["minutes", "Dk", "Dakika"],
+  ["goals", "G", "Gol"],
+  ["assists", "A", "Asist"],
+  ["yellowCards", "🟨", "Sarı kart"],
+  ["redCards", "🟥", "Kırmızı kart"],
+] as const;
+
 export default async function Squad() {
   const data = await getFootballData();
   return (
@@ -20,59 +30,45 @@ export default async function Squad() {
         {groups.map((group) => (
           <section key={group}>
             <h2>{group === "Kaleci" ? "Kaleciler" : group}</h2>
-            <div className="squad-list">
-              {data.players
-                .filter((p) => p.position === group)
-                .map((player) => (
-                  <PlayerRow key={player.id} player={player} />
-                ))}
+            <div className="squad-table-wrap">
+              <table className="squad-table">
+                <thead>
+                  <tr>
+                    <th>Oyuncu</th>
+                    {statColumns.map(([key, symbol, label]) => (
+                      <th key={key} title={label} aria-label={label}>
+                        {symbol}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.players
+                    .filter((player) => player.position === group)
+                    .map((player) => (
+                      <tr key={player.id}>
+                        <td>
+                          <span className="shirt-number">{player.number}</span>
+                          <span className="squad-player-name">
+                            <strong>{player.name}</strong>
+                            <small>{player.nationality}</small>
+                          </span>
+                        </td>
+                        {statColumns.map(([key]) => (
+                          <td key={key}>
+                            {player[key] === null
+                              ? "—"
+                              : displayValue(player[key])}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
             </div>
           </section>
         ))}
       </div>
     </main>
-  );
-}
-function PlayerRow({ player }: { player: Player }) {
-  return (
-    <details className="player-row">
-      <summary>
-        <span className="shirt-number">{player.number}</span>
-        <span className="player-identity">
-          <strong>{player.name}</strong>
-          <small>
-            {player.nationality} · {player.position}
-          </small>
-        </span>
-        <span>
-          <b>{displayValue(player.appearances)}</b>
-          <small>Maç</small>
-        </span>
-        <span>
-          <b>{displayValue(player.minutes)}</b>
-          <small>Dk.</small>
-        </span>
-        <span className="row-toggle" aria-hidden>
-          +
-        </span>
-      </summary>
-      <div className="player-detail">
-        <span>
-          İlk 11 <b>{displayValue(player.starts)}</b>
-        </span>
-        <span>
-          Gol <b>{displayValue(player.goals)}</b>
-        </span>
-        <span>
-          Asist <b>{displayValue(player.assists)}</b>
-        </span>
-        <span>
-          Sarı <b>{displayValue(player.yellowCards)}</b>
-        </span>
-        <span>
-          Kırmızı <b>{displayValue(player.redCards)}</b>
-        </span>
-      </div>
-    </details>
   );
 }
