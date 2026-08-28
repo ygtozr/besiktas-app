@@ -1,12 +1,8 @@
 import type { Standing } from "@/lib/types";
 export function StandingsTable({ rows }: { rows: Standing[] }) {
   return (
-    <div
-      className="table-wrap"
-      tabIndex={0}
-      aria-label="Puan tablosu, yatay kaydırılabilir"
-    >
-      <table>
+    <div className="table-wrap standings-wrap">
+      <table className="standings-table">
         <thead>
           <tr>
             <th>Sıra</th>
@@ -28,7 +24,13 @@ export function StandingsTable({ rows }: { rows: Standing[] }) {
               className={row.team === "Beşiktaş" ? "besiktas-row" : ""}
             >
               <td>{row.position}</td>
-              <td>{row.team}</td>
+              <td className="standing-team">
+                <strong>{row.team}</strong>
+                <small>
+                  {row.won}G · {row.drawn}B · {row.lost}M · {row.goalsFor}-
+                  {row.goalsAgainst}
+                </small>
+              </td>
               <td>{row.played}</td>
               <td>{row.won}</td>
               <td>{row.drawn}</td>

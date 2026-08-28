@@ -33,16 +33,15 @@ export function Navigation() {
           </nav>
         </div>
       </header>
-      <nav
-        className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-4 border-t border-[var(--line)] bg-[var(--surface)] p-2 md:hidden"
-        aria-label="Mobil navigasyon"
-      >
+      <nav className="mobile-nav md:hidden" aria-label="Mobil navigasyon">
         {links.map(([href, label, icon]) => (
           <Link
             key={href}
             href={href}
             aria-current={pathname === href ? "page" : undefined}
-            className={`flex flex-col items-center gap-1 rounded-lg p-2 text-[.7rem] font-bold ${pathname === href ? "bg-zinc-950 text-white dark:bg-white dark:text-black" : "text-[var(--muted)]"}`}
+            className={
+              pathname === href ? "mobile-nav-link active" : "mobile-nav-link"
+            }
           >
             <span aria-hidden>{icon}</span>
             {label}

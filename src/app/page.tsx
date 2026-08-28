@@ -21,10 +21,10 @@ export default async function Home() {
       <h1>Siyah beyaz gündem.</h1>
       <DataStatus updatedAt={data.updatedAt} stale={data.stale} />
       <section className="mt-6 grid gap-4 lg:grid-cols-[1.35fr_.65fr]">
-        <div className="card p-5 md:p-7">
+        <div className="card next-match-card">
           <h2 className="eyebrow">Sıradaki maç</h2>
-          <h3 className="mt-2 text-3xl font-bold">{next.opponent}</h3>
-          <p className="mb-5 text-lg font-semibold">
+          <h3 className="compact-match-title">{next.opponent}</h3>
+          <p className="compact-match-meta">
             {next.competition} · {next.home ? "İç saha" : "Deplasman"}
           </p>
           <Countdown target={next.date} serverNow={getServerNow()} />
@@ -59,9 +59,9 @@ export default async function Home() {
         <div className="card">
           <p className="eyebrow">Güncel lig konumu</p>
           <div className="mt-3 flex items-end justify-between">
-            <strong className="text-5xl">{bjk.position}.</strong>
+            <strong className="league-position">{bjk.position}.</strong>
             <div className="text-right">
-              <strong className="text-2xl">{bjk.points} puan</strong>
+              <strong className="league-points">{bjk.points} puan</strong>
               <p className="muted">
                 {bjk.played} maç · Liderin {leader.points - bjk.points} puan
                 gerisinde

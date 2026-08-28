@@ -67,8 +67,8 @@ export function PlayerPerformanceTable({ players }: { players: Player[] }) {
           </select>
         </label>
       </div>
-      <div className="table-wrap" tabIndex={0}>
-        <table>
+      <div className="table-wrap performance-wrap">
+        <table className="performance-table">
           <thead>
             <tr>
               <th>Oyuncu</th>
@@ -92,6 +92,15 @@ export function PlayerPerformanceTable({ players }: { players: Player[] }) {
               <tr key={p.id}>
                 <td>
                   <strong>{p.name}</strong>
+                  <small className="mobile-player-position">{p.position}</small>
+                  <span className="mobile-player-stats">
+                    {columns.map(([key, label]) => (
+                      <span key={key}>
+                        <small>{label}</small>
+                        <b>{displayValue(p[key])}</b>
+                      </span>
+                    ))}
+                  </span>
                 </td>
                 <td>{p.position}</td>
                 {columns.map(([key]) => (

@@ -77,19 +77,19 @@ function TeamPerformance({ data }: { data: FootballData }) {
         {stats.map(([label, value]) => (
           <div className="card" key={label}>
             <p className="eyebrow">{label}</p>
-            <strong className="mt-2 block text-3xl">{value}</strong>
+            <strong className="stat-value">{value}</strong>
           </div>
         ))}
       </section>
       <section className="mt-6 grid-cards">
         <div className="card">
           <h2>İç saha performansı</h2>
-          <p className="text-3xl font-black">%75 puan oranı</p>
+          <p className="compact-highlight">%75 puan oranı</p>
           <p className="muted mt-2">3 galibiyet · 1 beraberlik</p>
         </div>
         <div className="card">
           <h2>Deplasman performansı</h2>
-          <p className="text-3xl font-black">%58 puan oranı</p>
+          <p className="compact-highlight">%58 puan oranı</p>
           <p className="muted mt-2">
             2 galibiyet · 1 beraberlik · 1 mağlubiyet
           </p>
