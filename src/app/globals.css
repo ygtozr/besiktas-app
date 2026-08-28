@@ -409,6 +409,50 @@ h2 {
   color: var(--muted);
   font-size: 0.58rem;
 }
+.team-performance-wrap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--surface);
+}
+.team-performance-table th:first-child {
+  width: 20%;
+  text-align: left;
+}
+.team-performance-table th:nth-child(n + 2):nth-child(-n + 9) {
+  width: 7%;
+  text-align: center;
+}
+.team-performance-table th:last-child {
+  width: 24%;
+  text-align: center;
+}
+.team-performance-table td {
+  padding: 0.48rem 0.2rem;
+  text-align: center;
+  font-size: 0.68rem;
+}
+.team-performance-table td:first-child {
+  text-align: left;
+}
+.table-form {
+  font-size: 0.62rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.performance-table th:first-child {
+  width: 25%;
+}
+.performance-table th:nth-child(2) {
+  width: 12%;
+}
+.performance-table th:nth-child(n + 3) {
+  width: 9%;
+  text-align: center;
+}
+.performance-table td:nth-child(n + 3) {
+  text-align: center;
+}
 .squad-list {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -689,7 +733,7 @@ h2 {
   .standings-table td {
     padding: 0.42rem 0.08rem;
     text-align: center;
-    font-size: 0.57rem;
+    font-size: 0.62rem;
   }
   .standings-table th:first-child {
     width: 8%;
@@ -714,31 +758,32 @@ h2 {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .performance-table th:nth-child(n + 2),
-  .performance-table td:nth-child(n + 2) {
+  .performance-table th:nth-child(2),
+  .performance-table td:nth-child(2) {
     display: none;
+  }
+  .performance-table th:first-child {
+    width: 34%;
+    text-align: left;
+  }
+  .performance-table th:nth-child(n + 3) {
+    width: 9.42%;
+    padding: 0.38rem 0.05rem;
+    text-align: center;
+    font-size: 0.54rem;
+  }
+  .performance-table td:nth-child(n + 3) {
+    padding: 0.42rem 0.05rem;
+    text-align: center;
+    font-size: 0.6rem;
+  }
+  .performance-table td:first-child {
+    padding-inline: 0.35rem;
   }
   .mobile-player-position {
     display: block;
     color: var(--muted);
     font-size: 0.58rem;
-  }
-  .mobile-player-stats {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.15rem;
-    margin-top: 0.25rem;
-  }
-  .mobile-player-stats > span {
-    text-align: center;
-  }
-  .mobile-player-stats small,
-  .mobile-player-stats b {
-    display: block;
-    font-size: 0.57rem;
-  }
-  .mobile-player-stats small {
-    color: var(--muted);
   }
   .performance-table td {
     white-space: normal;

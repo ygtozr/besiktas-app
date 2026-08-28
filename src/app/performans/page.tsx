@@ -56,45 +56,80 @@ export default async function Performance({
 }
 function TeamPerformance({ data }: { data: FootballData }) {
   const games = data.matches.filter((m) => m.score);
-  const won = games.filter((m) => resultLetter(m) === "G").length,
-    drawn = games.filter((m) => resultLetter(m) === "B").length,
-    lost = games.filter((m) => resultLetter(m) === "M").length;
-  const gf = games.reduce((s, m) => s + (m.score?.besiktas ?? 0), 0),
-    ga = games.reduce((s, m) => s + (m.score?.opponent ?? 0), 0);
-  const stats = [
-    ["Oynanan maç", games.length],
-    ["Galibiyet", won],
-    ["Beraberlik", drawn],
-    ["Mağlubiyet", lost],
-    ["Atılan gol", gf],
-    ["Yenilen gol", ga],
-    ["Gol averajı", gf - ga],
-    ["Maç başına puan", ((won * 3 + drawn) / games.length).toFixed(2)],
+  const rows = [
+    summarize("Genel", games),
+    summarize(
+      "İç saha",
+      games.filter((match) => match.home),
+    ),
+    summarize(
+      "Deplasman",
+      games.filter((match) => !match.home),
+    ),
   ];
   return (
-    <>
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map(([label, value]) => (
-          <div className="card" key={label}>
-            <p className="eyebrow">{label}</p>
-            <strong className="stat-value">{value}</strong>
-          </div>
-        ))}
-      </section>
-      <section className="mt-6 grid-cards">
-        <div className="card">
-          <h2>İç saha performansı</h2>
-          <p className="compact-highlight">%75 puan oranı</p>
-          <p className="muted mt-2">3 galibiyet · 1 beraberlik</p>
-        </div>
-        <div className="card">
-          <h2>Deplasman performansı</h2>
-          <p className="compact-highlight">%58 puan oranı</p>
-          <p className="muted mt-2">
-            2 galibiyet · 1 beraberlik · 1 mağlubiyet
-          </p>
-        </div>
-      </section>
-    </>
+    <section className="team-performance-wrap">
+      <table className="team-performance-table">
+        <thead>
+          <tr>
+            <th>Kapsam</th>
+            <th>O</th>
+            <th>G</th>
+            <th>B</th>
+            <th>M</th>
+            <th>A</th>
+            <th>Y</th>
+            <th>Av</th>
+            <th>MP</th>
+            <th>Form</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.label}>
+              <td>
+                <strong>{row.label}</strong>
+              </td>
+              <td>{row.played}</td>
+              <td>{row.won}</td>
+              <td>{row.drawn}</td>
+              <td>{row.lost}</td>
+              <td>{row.gf}</td>
+              <td>{row.ga}</td>
+              <td>{row.gf - row.ga}</td>
+              <td>{row.ppg}</td>
+              <td>
+                <span className="table-form">{row.form.join(" ") || "—"}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
   );
+}
+
+function summarize(label: string, games: FootballData["matches"]) {
+  const won = games.filter((match) => resultLetter(match) === "G").length;
+  const drawn = games.filter((match) => resultLetter(match) === "B").length;
+  const lost = games.filter((match) => resultLetter(match) === "M").length;
+  const gf = games.reduce(
+    (sum, match) => sum + (match.score?.besiktas ?? 0),
+    0,
+  );
+  const ga = games.reduce(
+    (sum, match) => sum + (match.score?.opponent ?? 0),
+    0,
+  );
+  return {
+    label,
+    played: games.length,
+    won,
+    drawn,
+    lost,
+    gf,
+    ga,
+    ppg: games.length ? ((won * 3 + drawn) / games.length).toFixed(2) : "—",
+    form: games.slice(-5).map(resultLetter),
+  };
 }

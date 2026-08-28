@@ -93,18 +93,12 @@ export function PlayerPerformanceTable({ players }: { players: Player[] }) {
                 <td>
                   <strong>{p.name}</strong>
                   <small className="mobile-player-position">{p.position}</small>
-                  <span className="mobile-player-stats">
-                    {columns.map(([key, label]) => (
-                      <span key={key}>
-                        <small>{label}</small>
-                        <b>{displayValue(p[key])}</b>
-                      </span>
-                    ))}
-                  </span>
                 </td>
                 <td>{p.position}</td>
                 {columns.map(([key]) => (
-                  <td key={key}>{displayValue(p[key])}</td>
+                  <td key={key}>
+                    {p[key] === null ? "—" : displayValue(p[key])}
+                  </td>
                 ))}
               </tr>
             ))}
