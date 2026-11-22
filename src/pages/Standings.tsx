@@ -9,7 +9,7 @@ function zoneClass(z?: string): string {
   const s = z.toLowerCase();
   if (s.includes('champions')) return 'z-cl';
   if (s.includes('europa') || s.includes('conference')) return 'z-el';
-  if (s.includes('relegation')) return 'z-rel';
+  if (s.includes('relegat')) return 'z-rel';
   return 'z-other';
 }
 
