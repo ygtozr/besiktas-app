@@ -15,6 +15,7 @@ export default tseslint.config(
   {
     files: ['**/*.{js,mjs}'],
     extends: [js.configs.recommended],
-    languageOptions: { globals: globals.node },
+    // betikler page.evaluate içinde tarayıcı kodu da çalıştırır
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
 );

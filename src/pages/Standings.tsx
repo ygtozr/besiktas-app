@@ -1,5 +1,6 @@
 import type { Standings as StandingsT } from '../../shared/types';
 import { DataNote } from '../components/DataNote';
+import { PageTop } from '../components/PageTop';
 import { ErrorBox, Loading } from '../components/States';
 import { useApi } from '../lib/api';
 
@@ -26,7 +27,7 @@ export function Standings() {
 
   return (
     <div className="page">
-      <h1 className="page-h">Puan durumu</h1>
+      <PageTop>Puan durumu</PageTop>
       {data && <p className="muted small">{data.data.season}</p>}
       {error && !data && <ErrorBox message={error} onRetry={reload} />}
       {!data && !error && <Loading />}

@@ -11,7 +11,9 @@ let BASE = process.env.BASE;
 let server;
 if (!BASE) {
   BASE = `http://localhost:${PORT}`;
-  server = spawn('npx', ['vite', '--port', String(PORT), '--strictPort'], { stdio: 'pipe' });
+  server = spawn('node_modules/.bin/vite', ['--port', String(PORT), '--strictPort'], {
+    stdio: 'pipe',
+  });
   await new Promise((ok, bad) => {
     const t = setTimeout(() => bad(new Error('sunucu açılmadı')), 30000);
     server.stdout.on('data', (d) => {
@@ -91,6 +93,7 @@ try {
     ['/canli', 'canli', 'h1'],
     ['/kadro', 'kadro', '.squad tbody tr'],
     ['/puan', 'puan', 'tr.us'],
+    ['/ayarlar', 'ayarlar', '.theme-card'],
   ];
   for (const [path, name, sel] of pages) {
     await page.goto(BASE + path);
@@ -109,6 +112,31 @@ try {
   await page.getByRole('tab', { name: 'İstatistik' }).click();
   check((await page.locator('.stat').count()) > 3, 'maç: istatistik görünür');
   await page.screenshot({ path: 'smoke-out/mac-istatistik.png', fullPage: true });
+
+  // ayarlar: tema ve yazı boyutu uygulanır, sayfa yenilense de kalır
+  await page.goto(`${BASE}/ayarlar`);
+  await page.getByRole('radio', { name: /Lavanta/ }).click();
+  await page.getByRole('button', { name: 'Yazıyı büyüt' }).click();
+  await page.reload();
+  await page.waitForSelector('.theme-card');
+  const applied = await page.evaluate(() => ({
+    theme: document.documentElement.dataset.theme,
+    scale: getComputedStyle(document.documentElement).getPropertyValue('--scale').trim(),
+    px: getComputedStyle(document.documentElement).fontSize,
+  }));
+  check(
+    applied.theme === 'lavanta' && applied.scale === '1.05',
+    `ayarlar kalıcı: ${JSON.stringify(applied)}`,
+  );
+  await page.screenshot({ path: 'smoke-out/ayarlar-lavanta.png', fullPage: true });
+  await page.goto(`${BASE}/kadro`);
+  await page.waitForSelector('.squad tbody tr');
+  const blanks = await page.$$eval(
+    '.squad td.num',
+    (tds) => tds.filter((td) => td.textContent.trim() === '').length,
+  );
+  check(blanks === 0, `kadro tablosunda boş hücre yok (${blanks})`);
+  await page.screenshot({ path: 'smoke-out/kadro-lavanta.png', fullPage: true });
 
   check(
     errors.length === 0,

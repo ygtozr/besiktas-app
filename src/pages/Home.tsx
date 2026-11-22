@@ -3,6 +3,7 @@ import { inLiveWindow, nextMatch } from '../../shared/live-window';
 import type { Fixtures, Standings } from '../../shared/types';
 import { Countdown } from '../components/Countdown';
 import { DataNote } from '../components/DataNote';
+import { PageTop } from '../components/PageTop';
 import { ErrorBox, Loading } from '../components/States';
 import { useApi, useRefreshOnFocus } from '../lib/api';
 import { longDay, time } from '../lib/format';
@@ -26,9 +27,9 @@ export function Home() {
 
   return (
     <div className="page home">
-      <h1 className="wordmark">
+      <PageTop wordmark>
         Siyah<span>Beyaz</span>
-      </h1>
+      </PageTop>
 
       {live && (
         <Link to="/canli" className="live-banner">

@@ -43,8 +43,8 @@ export default defineConfig({
         description:
           'Beşiktaş maçları, fikstür, kadro ve puan durumu. Bağımsız taraftar uygulaması.',
         lang: 'tr',
-        theme_color: '#0a0a0a',
-        background_color: '#0a0a0a',
+        theme_color: '#0b1120',
+        background_color: '#0b1120',
         display: 'standalone',
         start_url: '/',
         icons: [
@@ -59,9 +59,18 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png}'],
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
+          {
+            // seçilen yazı tipi ilk kullanımda saklanır
+            urlPattern: ({ url }) => url.pathname.endsWith('.woff2'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'fonts',
+              expiration: { maxEntries: 40, maxAgeSeconds: 365 * 24 * 60 * 60 },
+            },
+          },
           {
             // çevrimdışıyken son veriyi göster
             urlPattern: ({ url }) =>

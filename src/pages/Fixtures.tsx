@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { nextMatch } from '../../shared/live-window';
 import type { Competition, Fixtures as FixturesT, MatchSummary } from '../../shared/types';
 import { DataNote } from '../components/DataNote';
+import { PageTop } from '../components/PageTop';
 import { MatchRow } from '../components/MatchRow';
 import { ErrorBox, Loading, Notice } from '../components/States';
 import { useApi } from '../lib/api';
@@ -68,7 +69,7 @@ export function Fixtures() {
 
   return (
     <div className="page">
-      <h1 className="page-h">Fikstür</h1>
+      <PageTop>Fikstür</PageTop>
       <div className="chips" role="group" aria-label="Turnuva filtresi">
         {FILTERS.map((f) => (
           <button

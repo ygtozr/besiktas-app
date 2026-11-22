@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import type { LiveState } from '../../shared/types';
 import { Countdown } from '../components/Countdown';
 import { DataNote } from '../components/DataNote';
+import { PageTop } from '../components/PageTop';
 import { EventList } from '../components/EventList';
 import { ScoreHeader } from '../components/ScoreHeader';
 import { StatBars } from '../components/StatBars';
@@ -43,9 +44,9 @@ export function Live() {
     const d = s.detail;
     return (
       <div className="page">
-        <h1 className="page-h">
+        <PageTop>
           <span className="live-dot">Canlı</span>
-        </h1>
+        </PageTop>
         <ScoreHeader m={d.match} />
         <p className="muted small center">
           Son güncelleme {clock(data.fetchedAt)} ·{' '}
@@ -66,7 +67,7 @@ export function Live() {
 
   return (
     <div className="page">
-      <h1 className="page-h">Canlı</h1>
+      <PageTop>Canlı</PageTop>
       {s.detail && (
         <>
           <p className="muted">Maç bitti.</p>

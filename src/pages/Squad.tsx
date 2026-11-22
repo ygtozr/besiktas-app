@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Player, PositionGroup, Squad as SquadT } from '../../shared/types';
 import { DataNote } from '../components/DataNote';
+import { PageTop } from '../components/PageTop';
 import { ErrorBox, Loading } from '../components/States';
 import { useApi } from '../lib/api';
 
@@ -19,6 +20,12 @@ const SORTS: { k: Sort; l: string }[] = [
   { k: 'assists', l: 'Asist' },
   { k: 'minutes', l: 'Dakika' },
 ];
+
+/** Boş hücre yok: değer yoksa 0. */
+function Num({ v, strong = false }: { v: number; strong?: boolean }) {
+  const n = Number.isFinite(v) ? v : 0;
+  return <td className={`num ${n === 0 ? 'zero' : strong ? 'strong' : ''}`}>{n}</td>;
+}
 
 function Table({ players }: { players: Player[] }) {
   return (
@@ -46,18 +53,17 @@ function Table({ players }: { players: Player[] }) {
       <tbody>
         {players.map((p) => (
           <tr key={p.id}>
-            <td className="num muted">{p.number ?? ''}</td>
+            <td className="num muted">{p.number ?? '–'}</td>
             <td>
               <span className="pname">{p.name}</span>
               <span className="muted small">
-                {p.nationality ?? ''}
-                {p.age ? ` · ${p.age}` : ''}
+                {[p.nationality, p.age ? `${p.age} yaş` : undefined].filter(Boolean).join(' · ')}
               </span>
             </td>
-            <td className="num">{p.appearances}</td>
-            <td className="num">{p.minutes ?? '—'}</td>
-            <td className="num strong">{p.goals || ''}</td>
-            <td className="num">{p.assists || ''}</td>
+            <Num v={p.appearances} />
+            <Num v={p.minutes ?? 0} />
+            <Num v={p.goals} strong />
+            <Num v={p.assists} />
           </tr>
         ))}
       </tbody>
@@ -77,7 +83,7 @@ export function Squad() {
 
   return (
     <div className="page">
-      <h1 className="page-h">Kadro</h1>
+      <PageTop>Kadro</PageTop>
       {data && <p className="muted small">{data.data.scope}</p>}
       <div className="chips" role="group" aria-label="Sıralama">
         {SORTS.map((s) => (
