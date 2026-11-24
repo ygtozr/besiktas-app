@@ -44,13 +44,18 @@ export interface MatchEvent {
   player?: string;
   /** Değişiklikte çıkan oyuncu */
   playerOut?: string;
+  /** Golde asist yapan (kaynak kesin söylüyorsa) */
+  assist?: string;
 }
 
 export interface LineupPlayer {
   id: string;
   name: string;
   number?: string;
+  /** Kaynağın pozisyon kodu: G, LB, CD-L, DM, CM-R, LM, F... */
   position?: string;
+  /** API-Football saha ızgarası "satır:sütun" */
+  grid?: string;
   subbedIn: boolean;
   subbedOut: boolean;
 }
@@ -74,6 +79,8 @@ export interface MatchDetail {
   events: MatchEvent[];
   lineups: { home?: Lineup; away?: Lineup };
   stats: StatRow[];
+  /** Asisti hangi gole ait olduğu kaynakta belli olmayanlar */
+  assistsUnplaced?: { side: 'home' | 'away'; names: string[] }[];
 }
 
 export type PositionGroup = 'GK' | 'DF' | 'MF' | 'FW' | '?';

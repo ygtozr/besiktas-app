@@ -488,16 +488,17 @@ button {
 }
 .sh-row {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   gap: 0.6rem;
   align-items: center;
   margin: 0.8rem 0 0.4rem;
 }
 .sh-team {
+  overflow-wrap: break-word;
   font-family: var(--font-display);
   font-weight: 600;
   text-transform: var(--display-case);
-  font-size: 1.15rem;
+  font-size: min(1.15rem, 4.8vw);
   line-height: 1.15;
   color: var(--hero-ink-2);
 }
@@ -508,7 +509,9 @@ button {
 .sh-score {
   font-family: var(--font-display);
   font-weight: var(--display-weight);
-  font-size: 3.2rem;
+  white-space: nowrap;
+  /* büyük yazıda dar ekranı taşırmasın */
+  font-size: min(3.2rem, 13vw);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -1127,4 +1130,182 @@ button {
   .grid2 {
     grid-template-columns: 1fr;
   }
+}
+
+/* ---------- asist ---------- */
+.ev-assist {
+  font-style: italic;
+}
+
+/* ---------- saha dizilişi ---------- */
+.pitch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 0.4rem;
+  min-height: 30rem;
+  padding: 0.9rem 0.3rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 7%, var(--surface)) 0 3.2rem,
+    color-mix(in srgb, var(--accent) 11%, var(--surface)) 3.2rem 6.4rem
+  );
+  border: 1px solid var(--line);
+}
+.pitch-lines i {
+  position: absolute;
+  border: 1.5px solid color-mix(in srgb, var(--text) 16%, transparent);
+  pointer-events: none;
+}
+.pitch-lines .mid {
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-width: 1.5px 0 0;
+}
+.pitch-lines .circle {
+  left: 50%;
+  top: 50%;
+  width: 6rem;
+  height: 6rem;
+  margin: -3rem 0 0 -3rem;
+  border-radius: 50%;
+}
+.pitch-lines .box {
+  left: 25%;
+  right: 25%;
+  height: 3.8rem;
+}
+.pitch-lines .box.top {
+  top: -1.5px;
+  border-top: 0;
+}
+.pitch-lines .box.bottom {
+  bottom: -1.5px;
+  border-bottom: 0;
+}
+.pitch-row {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+.pl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 4.6rem;
+  text-align: center;
+  gap: 0.15rem;
+}
+.pl-shirt {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.pl.off .pl-shirt {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1.5px solid var(--accent);
+}
+.pl-sub {
+  position: absolute;
+  top: -0.45rem;
+  right: -0.55rem;
+  display: grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.68rem;
+  line-height: 1;
+}
+.pl-card {
+  position: absolute;
+  top: -0.3rem;
+  left: -0.25rem;
+  width: 0.55rem;
+  height: 0.75rem;
+  border-radius: 2px;
+}
+.pl-card.yellow,
+.mini-card.yellow {
+  background: var(--yellow);
+}
+.pl-card.red,
+.mini-card.red {
+  background: var(--red);
+}
+.pl-goal {
+  position: absolute;
+  top: 0.55rem;
+  left: -0.95rem;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.pl-goal b {
+  font-size: 0.6rem;
+  margin-left: 1px;
+  color: var(--text);
+}
+.pl-name {
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pl-in {
+  font-size: 0.64rem;
+  color: var(--text-2);
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pl-in::before {
+  content: '⇄ ';
+}
+.legend-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.74rem;
+  color: var(--text-3);
+}
+.mini-card {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.7rem;
+  border-radius: 1.5px;
+  vertical-align: -1px;
+  margin-left: 2px;
+}
+.lu-sub {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-3);
+}
+.lineup .came-on .lu-name {
+  color: var(--text);
 }

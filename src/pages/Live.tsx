@@ -54,7 +54,12 @@ export function Live() {
           {loading ? ' · yenileniyor…' : ''}
         </p>
         <h2 className="sub-h">Olay akışı</h2>
-        <EventList events={d.events} newestFirst />
+        <EventList
+          events={d.events}
+          newestFirst
+          unplaced={d.assistsUnplaced}
+          teams={{ home: d.match.home.name, away: d.match.away.name }}
+        />
         <h2 className="sub-h">İstatistik</h2>
         <StatBars stats={d.stats} />
         <Link to={matchHref(d.match)} className="btn block">

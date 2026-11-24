@@ -124,7 +124,7 @@ try {
   // maç detayı sekmeleri
   await page.goto(`${BASE}/mac/${last.id}?l=${last.leagueSlug}`);
   await page.getByRole('tab', { name: 'Kadrolar' }).click();
-  check((await page.locator('.lineup .lu-row').count()) >= 11, 'maç: ilk 11 görünür');
+  check((await page.locator('.pitch .pl').count()) === 11, 'maç: saha dizilişinde 11 oyuncu');
   await page.screenshot({ path: 'smoke-out/mac-kadro.png', fullPage: true });
   await page.getByRole('tab', { name: 'İstatistik' }).click();
   check((await page.locator('.stat').count()) > 3, 'maç: istatistik görünür');

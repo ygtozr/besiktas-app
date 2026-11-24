@@ -54,6 +54,11 @@ describe('API-Football dönüşümü', () => {
     ]);
   });
 
+  it('golde asist API-Football’dan doğrudan', () => {
+    expect(d.events[0]).toMatchObject({ kind: 'goal', player: 'Forvet Bir', assist: 'Orta Bir' });
+    expect(d.events.find((e) => e.kind === 'penalty')?.assist).toBeUndefined();
+  });
+
   it('değişiklik: sahadaki oyuncu çıkan sayılır (alan sırası ne olursa olsun)', () => {
     const subs = d.events.filter((e) => e.kind === 'sub');
     expect(subs[0]).toMatchObject({ player: 'Yedek Bir', playerOut: 'Forvet Bir' });

@@ -1,5 +1,16 @@
 # Sürüm notları
 
+## 1.1.0 — 24 Kasım 2026
+
+- **Asistler:** Olaylarda golün altında asist yapan yazar. ESPN asisti gole bağlamadığı için
+  yalnızca kesin eşleşen asistler gole yazılır (oyuncu o dakikada sahada mı, kaç asisti var);
+  belirsiz olanlar olay listesinin altında "Asist yapanlar" olarak ayrıca gösterilir.
+  Türkiye Kupası maçlarında asist doğrudan API-Football'dan gelir.
+- **Saha dizilişi:** Kadrolar sekmesinde ilk 11 sahada dizilişe göre gösterilir.
+  Oyundan çıkanların üstünde ⇄ işareti, altında dakika ve giren oyuncu yazar; gol ve kartlar
+  oyuncunun üstünde işaretlenir. Yedekler listesinde oyuna girenler önce, kimin yerine girdiği ile.
+- Büyük yazı boyutunda skor ve takım adları taşmaz.
+
 ## 1.0.0 — 24 Kasım 2026
 
 İlk kalıcı sürüm.

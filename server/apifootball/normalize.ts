@@ -49,7 +49,13 @@ interface AfEvent {
 }
 
 interface AfLineupPlayer {
-  player: { id: number; name: string; number?: number | null; pos?: string | null };
+  player: {
+    id: number;
+    name: string;
+    number?: number | null;
+    pos?: string | null;
+    grid?: string | null;
+  };
 }
 
 interface AfLineup {
@@ -204,6 +210,8 @@ export function normalizeAfEvents(
       kind,
       side,
       player: e.player.name ?? undefined,
+      // API-Football asisti doğrudan verir (penaltı ve kendi kalesine golde yok)
+      assist: kind === 'goal' ? (e.assist.name ?? undefined) : undefined,
     });
   }
   return out;
@@ -221,6 +229,7 @@ function lineup(l: AfLineup, events: MatchEvent[], side: 'home' | 'away'): Lineu
     name: x.player.name,
     number: x.player.number != null ? String(x.player.number) : undefined,
     position: x.player.pos ?? undefined,
+    grid: x.player.grid ?? undefined,
     subbedIn: ins.has(x.player.name),
     subbedOut: outs.has(x.player.name),
   });

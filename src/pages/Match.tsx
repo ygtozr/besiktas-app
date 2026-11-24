@@ -69,9 +69,15 @@ export function Match() {
           (d.match.state === 'pre' ? (
             <p className="empty">Maç başlamadı.</p>
           ) : (
-            <EventList events={d.events} />
+            <EventList
+              events={d.events}
+              unplaced={d.assistsUnplaced}
+              teams={{ home: d.match.home.name, away: d.match.away.name }}
+            />
           ))}
-        {tab === 'lineups' && <Lineups m={d.match} home={d.lineups.home} away={d.lineups.away} />}
+        {tab === 'lineups' && (
+          <Lineups m={d.match} home={d.lineups.home} away={d.lineups.away} events={d.events} />
+        )}
         {tab === 'stats' && <StatBars stats={d.stats} />}
       </div>
       <DataNote env={data} />

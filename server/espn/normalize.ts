@@ -2,6 +2,7 @@
 
 import { club, competitionBySlugPrefix } from '../../config/club.js';
 import { teamNames } from '../../config/team-names.js';
+import { placeAssists } from '../assists.js';
 import { countryTr } from '../country-tr.js';
 import type {
   Competition,
@@ -81,6 +82,7 @@ interface RawRosterEntry {
   subbedOut?: boolean;
   athlete: { id: string; displayName: string };
   position?: { abbreviation?: string };
+  stats?: RawStat[];
 }
 
 interface RawRoster {
@@ -395,12 +397,28 @@ export function normalizeSummary(raw: RawSummary): MatchDetail {
   const rosters = raw.rosters ?? [];
   const hr = rosters.find((r) => r.homeAway === 'home');
   const ar = rosters.find((r) => r.homeAway === 'away');
+  const lineups = { home: hr && lineup(hr), away: ar && lineup(ar) };
+  const placed = placeAssists(normalizeEvents(raw.keyEvents, homeId), lineups, {
+    home: assistCounts(hr),
+    away: assistCounts(ar),
+  });
   return {
     match,
-    events: normalizeEvents(raw.keyEvents, homeId),
-    lineups: { home: hr && lineup(hr), away: ar && lineup(ar) },
+    events: placed.events,
+    lineups,
     stats: normalizeStats(raw.boxscore, homeId),
+    assistsUnplaced: placed.unplaced.length ? placed.unplaced : undefined,
   };
+}
+
+/** Oyuncu başına bu maçtaki asist sayısı. */
+function assistCounts(r: RawRoster | undefined): Map<string, number> {
+  const m = new Map<string, number>();
+  for (const p of r?.roster ?? []) {
+    const n = Number(p.stats?.find((s) => s.name === 'goalAssists')?.value ?? 0);
+    if (n > 0) m.set(p.athlete.displayName, n);
+  }
+  return m;
 }
 
 /* ---------- oyuncu dakikası ---------- */
