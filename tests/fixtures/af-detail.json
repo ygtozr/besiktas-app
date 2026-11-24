@@ -1,0 +1,33 @@
+{
+  "response": [
+    {
+      "fixture": { "id": 1300000, "date": "2026-12-23T17:00:00+00:00", "venue": { "name": "Bodrum İlçe Stadyumu" }, "status": { "short": "FT", "elapsed": 90, "extra": null } },
+      "league": { "id": 206, "round": "Group Stage - 2" },
+      "teams": { "home": { "id": 607, "name": "Bodrumspor" }, "away": { "id": 549, "name": "Besiktas" } },
+      "goals": { "home": 1, "away": 3 },
+      "events": [
+        { "time": { "elapsed": 12, "extra": null }, "team": { "id": 549, "name": "Besiktas" }, "player": { "id": 11, "name": "Forvet Bir" }, "assist": { "id": 12, "name": "Orta Bir" }, "type": "Goal", "detail": "Normal Goal" },
+        { "time": { "elapsed": 30, "extra": null }, "team": { "id": 607, "name": "Bodrumspor" }, "player": { "id": 21, "name": "Rakip Bir" }, "assist": { "id": null, "name": null }, "type": "Card", "detail": "Yellow Card" },
+        { "time": { "elapsed": 45, "extra": 2 }, "team": { "id": 607, "name": "Bodrumspor" }, "player": { "id": 22, "name": "Rakip İki" }, "assist": { "id": null, "name": null }, "type": "Goal", "detail": "Penalty" },
+        { "time": { "elapsed": 60, "extra": null }, "team": { "id": 549, "name": "Besiktas" }, "player": { "id": 11, "name": "Forvet Bir" }, "assist": { "id": 13, "name": "Yedek Bir" }, "type": "subst", "detail": "Substitution 1" },
+        { "time": { "elapsed": 70, "extra": null }, "team": { "id": 549, "name": "Besiktas" }, "player": { "id": 14, "name": "Yedek İki" }, "assist": { "id": 12, "name": "Orta Bir" }, "type": "subst", "detail": "Substitution 2" },
+        { "time": { "elapsed": 75, "extra": null }, "team": { "id": 607, "name": "Bodrumspor" }, "player": { "id": 23, "name": "Rakip Üç" }, "assist": { "id": null, "name": null }, "type": "Goal", "detail": "Own Goal" },
+        { "time": { "elapsed": 80, "extra": null }, "team": { "id": 549, "name": "Besiktas" }, "player": { "id": 13, "name": "Yedek Bir" }, "assist": { "id": null, "name": null }, "type": "Goal", "detail": "Missed Penalty" },
+        { "time": { "elapsed": 88, "extra": null }, "team": { "id": 549, "name": "Besiktas" }, "player": { "id": 13, "name": "Yedek Bir" }, "assist": { "id": null, "name": null }, "type": "Goal", "detail": "Normal Goal" },
+        { "time": { "elapsed": 90, "extra": 3 }, "team": { "id": 607, "name": "Bodrumspor" }, "player": { "id": 21, "name": "Rakip Bir" }, "assist": { "id": null, "name": null }, "type": "Card", "detail": "Second Yellow card" }
+      ],
+      "lineups": [
+        { "team": { "id": 607, "name": "Bodrumspor" }, "formation": "4-4-2",
+          "startXI": [ { "player": { "id": 21, "name": "Rakip Bir", "number": 8, "pos": "M" } }, { "player": { "id": 22, "name": "Rakip İki", "number": 9, "pos": "F" } }, { "player": { "id": 23, "name": "Rakip Üç", "number": 4, "pos": "D" } } ],
+          "substitutes": [] },
+        { "team": { "id": 549, "name": "Besiktas" }, "formation": "4-2-3-1",
+          "startXI": [ { "player": { "id": 10, "name": "Kaleci Bir", "number": 1, "pos": "G" } }, { "player": { "id": 11, "name": "Forvet Bir", "number": 9, "pos": "F" } }, { "player": { "id": 12, "name": "Orta Bir", "number": 10, "pos": "M" } } ],
+          "substitutes": [ { "player": { "id": 13, "name": "Yedek Bir", "number": 19, "pos": "F" } }, { "player": { "id": 14, "name": "Yedek İki", "number": 17, "pos": "M" } } ] }
+      ],
+      "statistics": [
+        { "team": { "id": 607, "name": "Bodrumspor" }, "statistics": [ { "type": "Ball Possession", "value": "41%" }, { "type": "Total Shots", "value": 7 }, { "type": "Red Cards", "value": null } ] },
+        { "team": { "id": 549, "name": "Besiktas" }, "statistics": [ { "type": "Ball Possession", "value": "59%" }, { "type": "Total Shots", "value": 15 }, { "type": "Red Cards", "value": null } ] }
+      ]
+    }
+  ]
+}
