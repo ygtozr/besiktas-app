@@ -10,6 +10,8 @@ export const club = {
     teamId: '1895',
     leagues: {
       superLig: 'tur.1',
+      /** Fikstürde Avrupa maçı yoksa puan durumu için */
+      europeFallback: 'uefa.europa',
     },
     competitionBySlugPrefix: {
       'tur.1': 'superlig',
@@ -24,10 +26,6 @@ export const club = {
       turkishCup: 206,
       superCup: 551,
     },
-  },
-  coverage: {
-    cup: false,
-    cupNotice: 'Kaynakta Türkiye Kupası verisi yok. Kupa maçları listede görünmez.',
   },
 } as const;
 

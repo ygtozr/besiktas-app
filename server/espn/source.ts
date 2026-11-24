@@ -1,5 +1,11 @@
 import { club } from '../../config/club.js';
-import type { Fixtures, MatchDetail, Squad, Standings } from '../../shared/types.js';
+import type {
+  Fixtures,
+  MatchDetail,
+  Squad,
+  Standings,
+  StandingsLeague,
+} from '../../shared/types.js';
 import { cached } from '../cache.js';
 import { isMatchDay } from '../../shared/live-window.js';
 import type { DataSource } from '../source.js';
@@ -38,8 +44,7 @@ async function loadFixtures(): Promise<Fixtures> {
     espnGet<RawSchedule>(espnUrl.futureSchedule(TEAM)),
   ]);
   const matches = normalizeSchedule(past, future);
-  const notices = club.coverage.cup ? [] : [club.coverage.cupNotice];
-  return { matches, notices };
+  return { matches, notices: [] };
 }
 
 async function loadMatch(id: string, league: string): Promise<MatchDetail> {
@@ -87,8 +92,18 @@ async function loadSquad(): Promise<Squad> {
   };
 }
 
-async function loadStandings(): Promise<Standings> {
-  return normalizeStandings(await espnGet<RawStandings>(espnUrl.standings(LEAGUE)));
+/** Bu sezonun Avrupa turnuvası: fikstürdeki son Avrupa maçından (ön eleme hariç). */
+export async function europeSlug(): Promise<string> {
+  const { value } = await getFixtures();
+  const euro = value.matches.filter(
+    (m) => m.competition === 'europe' && !m.leagueSlug.endsWith('_qual'),
+  );
+  return euro.at(-1)?.leagueSlug ?? club.espn.leagues.europeFallback;
+}
+
+async function loadStandings(league: StandingsLeague): Promise<Standings> {
+  const slug = league === 'europe' ? await europeSlug() : LEAGUE;
+  return normalizeStandings(await espnGet<RawStandings>(espnUrl.standings(slug)), league);
 }
 
 export const espnSource: DataSource = {
@@ -103,6 +118,6 @@ export function getSquad() {
   return cached('squad', TTL.squad, loadSquad);
 }
 
-export function getStandings() {
-  return cached('standings', TTL.standings, loadStandings);
+export function getStandings(league: StandingsLeague = 'superlig') {
+  return cached(`standings:${league}`, TTL.standings, () => loadStandings(league));
 }

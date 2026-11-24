@@ -828,13 +828,13 @@ button {
 .standings td:first-child {
   box-shadow: inset 3px 0 0 transparent;
 }
-.z-cl td:first-child {
+.z-top td:first-child {
   box-shadow: inset 3px 0 0 var(--accent);
 }
-.z-el td:first-child {
+.z-mid td:first-child {
   box-shadow: inset 3px 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
 }
-.z-rel td:first-child {
+.z-low td:first-child {
   box-shadow: inset 3px 0 0 var(--red);
 }
 .legend {
@@ -851,10 +851,10 @@ button {
   padding-left: 0.6rem;
   border-left: 3px solid var(--accent);
 }
-.legend li.z-el {
+.legend li.z-mid {
   border-left-color: color-mix(in srgb, var(--accent) 50%, transparent);
 }
-.legend li.z-rel {
+.legend li.z-low {
   border-left-color: var(--red);
 }
 

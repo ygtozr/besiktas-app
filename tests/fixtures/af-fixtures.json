@@ -1,0 +1,18 @@
+{
+  "get": "fixtures",
+  "results": 2,
+  "response": [
+    {
+      "fixture": { "id": 1300001, "date": "2027-01-14T16:30:00+00:00", "venue": { "name": "Tüpraş Stadyumu" }, "status": { "short": "NS", "elapsed": null, "extra": null } },
+      "league": { "id": 206, "name": "Cup", "round": "Group Stage - 3" },
+      "teams": { "home": { "id": 549, "name": "Besiktas" }, "away": { "id": 3573, "name": "Sakaryaspor" } },
+      "goals": { "home": null, "away": null }
+    },
+    {
+      "fixture": { "id": 1300000, "date": "2026-12-23T17:00:00+00:00", "venue": { "name": "Ali Sami Yen" }, "status": { "short": "FT", "elapsed": 90, "extra": null } },
+      "league": { "id": 206, "name": "Cup", "round": "Group Stage - 2" },
+      "teams": { "home": { "id": 607, "name": "Bodrumspor" }, "away": { "id": 549, "name": "Besiktas" } },
+      "goals": { "home": 1, "away": 3 }
+    }
+  ]
+}

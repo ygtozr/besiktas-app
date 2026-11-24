@@ -2,6 +2,7 @@
 
 import { club, competitionBySlugPrefix } from '../../config/club.js';
 import { teamNames } from '../../config/team-names.js';
+import { countryTr } from '../country-tr.js';
 import type {
   Competition,
   EventKind,
@@ -16,7 +17,9 @@ import type {
   StandingRow,
   Standings,
   StatRow,
+  StandingsLeague,
   TeamRef,
+  ZoneKind,
 } from '../../shared/types.js';
 
 /* ---------- ham ESPN şekilleri (yalnız kullandığımız alanlar) ---------- */
@@ -144,7 +147,31 @@ const names = teamNames;
 
 /** "2026-27 Turkish Super Lig" → "2026-27 Süper Lig" */
 export function seasonName(raw: string | undefined): string {
-  return (raw ?? '').replace(/Turkish Super Lig/i, 'Süper Lig').trim();
+  return (raw ?? '')
+    .replace(/Turkish Super Lig/i, 'Süper Lig')
+    .replace(/UEFA Champions League/i, 'Şampiyonlar Ligi')
+    .replace(/UEFA Europa Conference League|UEFA Conference League/i, 'Konferans Ligi')
+    .replace(/UEFA Europa League/i, 'Avrupa Ligi')
+    .trim();
+}
+
+/** ESPN bölge notu → Türkçe ad + tür. */
+export function zoneOf(desc: string | undefined): { zone?: string; zoneKind?: ZoneKind } {
+  if (!desc) return {};
+  const d = desc.toLowerCase();
+  const q = d.includes('qualif') && !d.includes('qualifies');
+  if (d.includes('relegat')) return { zone: 'Küme düşme', zoneKind: 'low' };
+  if (d.includes('eliminat')) return { zone: 'Elendi', zoneKind: 'low' };
+  if (d.includes('round of 16')) return { zone: 'Son 16 turu', zoneKind: 'top' };
+  if (d.includes('play-off') || d.includes('playoff'))
+    return { zone: 'Play-off turu', zoneKind: 'mid' };
+  if (d.includes('champions'))
+    return { zone: q ? 'Şampiyonlar Ligi ön eleme' : 'Şampiyonlar Ligi', zoneKind: 'top' };
+  if (d.includes('europa'))
+    return { zone: q ? 'Avrupa Ligi ön eleme' : 'Avrupa Ligi', zoneKind: 'mid' };
+  if (d.includes('conference'))
+    return { zone: q ? 'Konferans Ligi ön eleme' : 'Konferans Ligi', zoneKind: 'mid' };
+  return { zone: desc, zoneKind: 'mid' };
 }
 
 export function teamName(raw: string): string {
@@ -457,7 +484,7 @@ export function normalizeRoster(raw: RawTeamRoster, minutes?: Map<string, number
         number: a.jersey,
         position: posGroup(a.position?.abbreviation),
         age: a.age,
-        nationality: a.citizenship,
+        nationality: countryTr(a.citizenship),
         appearances: stat(cats, 'appearances'),
         subIns: stat(cats, 'subIns'),
         goals: stat(cats, 'totalGoals'),
@@ -477,7 +504,10 @@ export function normalizeRoster(raw: RawTeamRoster, minutes?: Map<string, number
 
 /* ---------- puan durumu ---------- */
 
-export function normalizeStandings(raw: RawStandings): Standings {
+export function normalizeStandings(
+  raw: RawStandings,
+  league: StandingsLeague = 'superlig',
+): Standings {
   const s = raw.children?.[0]?.standings;
   const rows: StandingRow[] = (s?.entries ?? []).map((e) => {
     const v = (k: string) => {
@@ -498,9 +528,9 @@ export function normalizeStandings(raw: RawStandings): Standings {
       gd: v('pointDifferential'),
       points: v('points'),
       isUs: e.team.id === US,
-      zone: e.note?.description,
+      ...zoneOf(e.note?.description),
     };
   });
   rows.sort((a, b) => a.rank - b.rank);
-  return { season: seasonName(s?.seasonDisplayName), rows };
+  return { league, season: seasonName(s?.seasonDisplayName), rows };
 }

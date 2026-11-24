@@ -49,6 +49,17 @@ try {
   const us = st.body.data?.rows.find((r) => r.isUs);
   check(st.status === 200 && !!us, `standings: Beşiktaş ${us?.rank}. sırada`);
 
+  const eu = await get('/api/standings?lig=avrupa');
+  const euUs = eu.body.data?.rows.find((r) => r.isUs);
+  check(
+    eu.status === 200 && eu.body.data.rows.length > 20 && !!euUs,
+    `Avrupa tablosu: ${eu.body.data?.season}, Beşiktaş ${euUs?.rank}. (${euUs?.points} puan)`,
+  );
+  check(
+    (fx.body.data.notices ?? []).every((n) => !/anahtar/.test(n)) || fx.body.source === 'ESPN',
+    `fikstür uyarıları: ${JSON.stringify(fx.body.data.notices)}`,
+  );
+
   const md = await get(`/api/match?id=${last.id}&league=${last.leagueSlug}`);
   check(
     md.status === 200 && md.body.data.events.length > 0,
@@ -69,6 +80,12 @@ try {
   check(
     sq.status === 200 && sq.body.data.players.length > 15,
     `squad: ${sq.body.data?.players.length} oyuncu, ${withMin} dakikalı`,
+  );
+
+  const nat = sq.body.data?.players.map((p) => p.nationality).filter(Boolean);
+  check(
+    nat.includes('Türkiye') && !nat.includes('Germany') && !nat.includes('Turkey'),
+    `kadro ülkeleri Türkçe: ${[...new Set(nat)].slice(0, 6).join(', ')}`,
   );
 
   const us2 = await get('/api/usage');

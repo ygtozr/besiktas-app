@@ -1,33 +1,58 @@
-import type { Standings as StandingsT } from '../../shared/types';
+import { useState } from 'react';
+import type { StandingsLeague, Standings as StandingsT } from '../../shared/types';
 import { DataNote } from '../components/DataNote';
 import { PageTop } from '../components/PageTop';
 import { ErrorBox, Loading } from '../components/States';
 import { useApi } from '../lib/api';
 
-/** Bölge adı → çizgi stili (renk yok, siyah-beyaz). */
-function zoneClass(z?: string): string {
-  if (!z) return '';
-  const s = z.toLowerCase();
-  if (s.includes('champions')) return 'z-cl';
-  if (s.includes('europa') || s.includes('conference')) return 'z-el';
-  if (s.includes('relegat')) return 'z-rel';
-  return 'z-other';
+const LEAGUES: { k: StandingsLeague; l: string; q: string }[] = [
+  { k: 'superlig', l: 'Süper Lig', q: '' },
+  { k: 'europe', l: 'Avrupa', q: '?lig=avrupa' },
+];
+
+const KEY = 'puan-lig';
+
+function readLeague(): StandingsLeague {
+  try {
+    return localStorage.getItem(KEY) === 'europe' ? 'europe' : 'superlig';
+  } catch {
+    return 'superlig';
+  }
 }
 
-const ZONE_TR: Record<string, string> = {
-  'z-cl': 'Şampiyonlar Ligi',
-  'z-el': 'Avrupa / Konferans Ligi',
-  'z-rel': 'Küme düşme',
-};
-
 export function Standings() {
-  const { data, error, reload } = useApi<StandingsT>('/api/standings');
+  const [league, setLeague] = useState<StandingsLeague>(readLeague);
+  const q = LEAGUES.find((x) => x.k === league)!.q;
+  const { data, error, reload } = useApi<StandingsT>(`/api/standings${q}`);
   const rows = data?.data.rows ?? [];
-  const zones = [...new Set(rows.map((r) => zoneClass(r.zone)).filter((z) => z && ZONE_TR[z]))];
+  // bölge açıklaması: tablodaki sırayla, tekrarsız
+  const zones = [...new Map(rows.filter((r) => r.zone).map((r) => [r.zone!, r.zoneKind ?? 'mid']))];
+
+  const choose = (k: StandingsLeague) => {
+    setLeague(k);
+    try {
+      localStorage.setItem(KEY, k);
+    } catch {
+      /* önemli değil */
+    }
+  };
 
   return (
     <div className="page">
       <PageTop>Puan durumu</PageTop>
+      <div className="seg" role="tablist" aria-label="Lig seç">
+        {LEAGUES.map((x) => (
+          <button
+            key={x.k}
+            role="tab"
+            aria-selected={league === x.k}
+            className={league === x.k ? 'on' : ''}
+            onClick={() => choose(x.k)}
+          >
+            {x.l}
+          </button>
+        ))}
+      </div>
       {data && <p className="muted small">{data.data.season}</p>}
       {error && !data && <ErrorBox message={error} onRetry={reload} />}
       {!data && !error && <Loading />}
@@ -62,7 +87,11 @@ export function Standings() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.teamId} className={`${r.isUs ? 'us' : ''} ${zoneClass(r.zone)}`}>
+                <tr
+                  key={r.teamId}
+                  className={`${r.isUs ? 'us' : ''} ${r.zoneKind ? `z-${r.zoneKind}` : ''}`}
+                  title={r.zone}
+                >
                   <td className="num">{r.rank}</td>
                   <td className="team">{r.team}</td>
                   <td className="num">{r.played}</td>
@@ -79,9 +108,9 @@ export function Standings() {
       )}
       {zones.length > 0 && (
         <ul className="legend">
-          {zones.map((z) => (
-            <li key={z} className={z}>
-              {ZONE_TR[z]}
+          {zones.map(([z, kind]) => (
+            <li key={z} className={`z-${kind}`}>
+              {z}
             </li>
           ))}
         </ul>

@@ -1,5 +1,5 @@
 import { handleStandings } from '../server/handlers/standings.js';
 
-export function GET(): Promise<Response> {
-  return handleStandings();
+export function GET(req: Request): Promise<Response> {
+  return handleStandings(req);
 }

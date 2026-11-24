@@ -116,10 +116,18 @@ export interface StandingRow {
   gd: number;
   points: number;
   isUs: boolean;
+  /** Türkçe bölge adı: "Şampiyonlar Ligi", "Küme düşme"... */
   zone?: string;
+  /** Bölge türü: çizgi stili için */
+  zoneKind?: ZoneKind;
 }
 
+export type ZoneKind = 'top' | 'mid' | 'low';
+
+export type StandingsLeague = 'superlig' | 'europe';
+
 export interface Standings {
+  league: StandingsLeague;
   season: string;
   rows: StandingRow[];
 }

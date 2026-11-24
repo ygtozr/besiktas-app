@@ -12,6 +12,8 @@ import {
   normalizeSchedule,
   normalizeStandings,
   normalizeSummary,
+  seasonName,
+  zoneOf,
   type RawSchedule,
   type RawStandings,
   type RawSummary,
@@ -133,5 +135,20 @@ describe('puan durumu', () => {
     const us = s.rows.filter((r) => r.isUs);
     expect(us).toHaveLength(1);
     expect(us[0].team).toBe('Beşiktaş');
+  });
+
+  it('bölge adları Türkçe', () => {
+    expect(s.season).toBe('2026-27 Süper Lig');
+    expect(s.rows[0].zone).toBe('Şampiyonlar Ligi');
+    expect(s.rows[0].zoneKind).toBe('top');
+    expect(s.rows.at(-1)).toMatchObject({ zone: 'Küme düşme', zoneKind: 'low' });
+  });
+
+  it('Avrupa notları', () => {
+    expect(zoneOf('Qualifies for round of 16')).toEqual({ zone: 'Son 16 turu', zoneKind: 'top' });
+    expect(zoneOf('Knockout round play-offs').zone).toBe('Play-off turu');
+    expect(zoneOf('Eliminated').zoneKind).toBe('low');
+    expect(zoneOf('Europa League qualifying').zone).toBe('Avrupa Ligi ön eleme');
+    expect(seasonName('2026-27 UEFA Europa League')).toBe('2026-27 Avrupa Ligi');
   });
 });
